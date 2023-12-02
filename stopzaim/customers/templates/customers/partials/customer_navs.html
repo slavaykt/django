@@ -1,0 +1,16 @@
+<ul class="nav nav-pills">
+    {% for nav in navs %}
+    <li class="nav-item">
+        <a class="nav-link {%if nav.active%} active{%endif%}{%if nav.disabled%} disabled{% endif %}" 
+            aria-current="page" 
+            {%if nav.table%}
+            href="{%if nav.is_new%}#{%else%}{% url nav.link customer.id nav.table%}{%endif%}"
+            {%else%}
+            href="{% url nav.link customer.id%}"
+            {%endif%}
+            >
+            {{ nav.title }}
+        </a>
+    </li>
+    {% endfor %}
+</ul>

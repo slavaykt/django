@@ -1,0 +1,14 @@
+<script>
+    $('form').data('serialize', $('form').serialize());
+
+    $(window).bind('beforeunload', function (e) {
+        if ($('form').serialize() != $('form').data('serialize') && is_submit_button_clicked == 0)
+            return 1;
+    });
+
+    var is_submit_button_clicked = 0;
+
+    $('button[type=submit]').on('click', function () {
+        is_submit_button_clicked = 1
+    })  
+</script>

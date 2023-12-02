@@ -1,0 +1,12 @@
+{% extends 'main/base.html' %}
+
+{% block title %} {{ customer }}: {{formset_title|lower}}{% endblock %}
+
+{% block header %}
+{{ customer }}: {{formset_title|lower}}
+{% endblock %}
+{% block content %}
+{% include 'customers/partials/customer_navs.html' with navs=navs customer=customer%}
+{% include 'customers/partials/customer_table_form.html' with formset=formset formset_name=formset_name %}
+{% include 'customers/partials/form_unsaved_changes.html' %}
+{% endblock %}

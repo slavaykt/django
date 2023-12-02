@@ -1,0 +1,178 @@
+{% extends 'main/base.html' %}
+
+{% block title %}
+{% if customer %}
+    {{ customer }}: общие сведения
+{% else %}
+    Новый клиент: общие сведения
+{% endif %}
+{% endblock %}
+
+{% block header %}
+{% if customer %}
+    {{ customer }}: общие сведения
+{% else %}
+    Новый клиент: общие сведения
+{% endif %}
+{% endblock %}
+{% block content %}
+
+{% include 'customers/partials/customer_navs.html' with navs=navs customer=customer%}
+<form method="post">
+    {% csrf_token %}
+    <button class="btn btn-success mt-2" type="submit">
+        Записать
+    </button>
+    <div class="container-fluid"> 
+        <div class="row">
+            <div class="col">
+                {{ form.surname.label_tag }}
+                {{ form.surname }}
+            </div>
+            <div class="col">
+                {{ form.first_name.label_tag }}
+                {{ form.first_name }}              
+            </div>
+            <div class="col">
+                {{ form.middle_name.label_tag }}
+                {{ form.middle_name }}               
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                {{ form.gender.label_tag }}
+                {{ form.gender }}
+            </div>
+            <div class="col">
+                {{ form.birthdate.label_tag }}
+                {{ form.birthdate }}              
+            </div>
+            <div class="col">
+                {{ form.phone.label_tag }}
+                {{ form.phone }}               
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                {{ form.tax_id.label_tag }}
+                {{ form.tax_id }}
+            </div>
+            <div class="col">
+                {{ form.snils.label_tag }}
+                {{ form.snils }}              
+            </div>
+        </div>
+        <p class="my-1">
+            <a class="btn btn-secondary" data-toggle="collapse" href="#collapsePassport" role="button" aria-expanded="false"
+                aria-controls="collapsePassport">
+                Паспорт серия {{customer.passport_series}} номер {{customer.passport_number}} выданный {{customer.passport_issue_date|date:"d.m.Y"}} 
+                {{customer.passport_issuer}} код подразделения {{customer.passport_issuer_code}}
+            </a>
+        </p>
+        <div class="collapse" id="collapsePassport">
+            <div class="card card-body">
+                <div class="row">
+                    <div class="col">
+                        {{ form.passport_series.label_tag }}
+                        {{ form.passport_series }}
+                    </div>
+                    <div class="col">
+                        {{ form.passport_number.label_tag }}
+                        {{ form.passport_number }}              
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        {{ form.passport_issuer.label_tag }}
+                        {{ form.passport_issuer }}
+                    </div>
+                    <div class="col">
+                        {{ form.passport_issue_date.label_tag }}
+                        {{ form.passport_issue_date }}              
+                    </div>
+                    <div class="col">
+                        {{ form.passport_issuer_code.label_tag }}
+                        {{ form.passport_issuer_code }}               
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                {{ form.address.label_tag }}
+                {{ form.address }}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                {{ form.birthplace.label_tag }}
+                {{ form.birthplace }}
+            </div>
+            <div class="col">
+                {{ form.tax_inspection.label_tag }}
+                {{ form.tax_inspection }}              
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                {{ form.occupation.label_tag }}
+                {{ form.occupation }}
+            </div>
+            <div class="col">
+                {{ form.previous_year_income.label_tag }}
+                {{ form.previous_year_income }}              
+            </div>
+        </div>    
+        <div class="row">
+            <div class="col">
+                {{ form.job.label_tag }}
+                {{ form.job }}
+            </div>
+            <div class="col">
+                {{ form.position.label_tag }}
+                {{ form.position }}              
+            </div>
+        </div>     
+        <div class="row">
+            <div class="col">
+                {{ form.sro.label_tag }}
+                {{ form.sro }}
+            </div>
+            <div class="col">
+                {{ form.arbitration_court.label_tag }}
+                {{ form.arbitration_court }}              
+            </div>
+        </div>  
+        <div class="row">
+            <div class="col">
+                {{ form.gosuslugi.label_tag }}
+                {{ form.gosuslugi }}              
+            </div>
+            <div class="col">
+                {{ form.application_date.label_tag }}
+                {{ form.application_date }}              
+            </div>
+        </div>    
+        <div class="row">
+            <div class="col">
+                <br>
+                <div class="form-check">
+                    {{form.is_married.label_tag}}
+                    {{form.is_married}}
+                </div>        
+            </div>
+            <div class="col">
+                {{form.spouse_name.label_tag}}
+                {{form.spouse_name}}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                {{ form.comments.label_tag }}
+                {{ form.comments }}              
+            </div>
+        </div>  
+    </div>
+</form>
+{% include 'customers/partials/form_unsaved_changes.html' %}
+{% endblock %}

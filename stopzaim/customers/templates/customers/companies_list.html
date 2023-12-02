@@ -1,0 +1,22 @@
+{% extends 'main/base.html' %}
+
+{% block title %}Список контрагентов{% endblock %}
+
+{% block header %}
+    Список контрагентов
+{% endblock %}
+{% block content %}
+<a class="btn btn-primary" href="{% url 'customers:create_company' %}">Добавить контрагента</a>
+<div class="list-group mt-2">
+    {% for company in companies %}
+    <div class="d-flex">
+        <a href="{% url 'customers:update_company' company.id %}" class="list-group-item list-group-item-action">{{company.name }}</a>
+        <button type="button" class="btn btn-secondary my-1" data-toggle="modal" data-target="#exampleModal{{company.id}}">
+            Удалить
+        </button>        
+    </div>
+    <!-- Modal -->
+    {% include "customers/partials/modal_delete_confirmation.html" with delete_url=delete_url id=company.id %}
+    {% endfor %}
+</div>
+{% endblock content %}

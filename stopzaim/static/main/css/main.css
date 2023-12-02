@@ -1,0 +1,7 @@
+.hide-on-hover button {
+    visibility: hidden;
+}
+
+.hide-on-hover:hover button {
+    visibility: visible;
+}

@@ -1,0 +1,22 @@
+{% extends 'main/base.html' %}
+
+{% block title %}Список клиентов{% endblock %}
+
+{% block header %}
+    Список клиентов
+{% endblock %}
+{% block content %}
+<a class="btn btn-success" href="{% url 'customers:create_customer' %}">Добавить клиента</a>
+<div class="list-group mt-2">
+    {% for customer in customers %}
+    <div class="d-flex">
+        <a href="{% url 'customers:update_customer' customer.id %}" class="list-group-item list-group-item-action">{{customer}}</a>
+        <button type="button" class="btn btn-secondary my-1" data-toggle="modal" data-target="#exampleModal{{customer.id}}">
+            Удалить
+        </button>        
+    </div>
+    <!-- Modal -->
+    {% include "customers/partials/modal_delete_confirmation.html" with delete_url=delete_url id=customer.id %}
+    {% endfor %}
+</div>
+{% endblock content %}

@@ -1,0 +1,123 @@
+<form method="post" id="main_form">
+    {% csrf_token %}
+    {{ formset.management_form }}
+    <div class="d-flex justify-content-between mt-2">
+        <button class="btn btn-success" type="submit">
+            Записать
+        </button>
+        <div class="form-check form-switch mt-1">
+            <input class="form-check-input" type="checkbox" id="hide-deleted-fields" name="hide_deleted_fields">
+            <label class="form-check-label" for="hide-deleted-fields">Скрыть удаленные</label>
+        </div>
+    </div>
+
+    <script type="text/html" id="new-row-template">
+                        <tr id="row-__prefix__" class= hide_all>
+                            {% for field in formset.empty_form.hidden_fields %}
+                                {{ field }}
+                            {% endfor %}
+                        
+                            {% for field in formset.empty_form.visible_fields %}
+                                {% if field.label != 'Delete' %}
+                                <td>{{ field }}</td>
+                                {% else %}
+                                <td>
+                                    <div class="form-check form-switch">
+                                        <input class="form-check-input delete-row-switch" type="checkbox" id="flexSwitchCheckDefault">
+                                    </div>
+                                    <span class="d-none">{{ field }}</span>
+                                </td>
+                                {% endif %}
+                            {% endfor %}
+                        </tr>
+                    </script>
+    <div class="card border-0 mt-2">
+        <table class="table table-borderless">
+            <thead>
+                {% for field in formset.empty_form.visible_fields %}
+                    <th>
+                        {% if field.label == 'Delete' %}
+                            Удалить?
+                        {% else %}
+                            {{ field.label }}
+                        {% endif %}
+                    </th>
+                {% endfor %}
+            </thead>
+            <tbody>
+                {% for error in formset.non_form_errors %}
+                <span class="text-danger">{{ error }}</span>
+                {% endfor %}
+                {% for form in formset %}
+                <tr id="row-{{ forloop.counter0 }}" class=hide_all>
+                    {{ form.id }}
+                    {% for field in form.visible_fields %}
+                        <td class="p-1">
+                            {% if field.label != 'Delete' %}
+                                {{ field }}
+                                {% for error in field.errors %}
+                                <span class="text-danger">{{ error }}</span>
+                                {% endfor %}
+                            {% else %}
+                                <span class="d-none">{{ field }}</span>
+                                <div class="form-check form-switch">
+                                    <input class="form-check-input delete-row-switch" type="checkbox" id="flexSwitchCheckDefault">
+                                </div>
+                            {% endif %}
+                        </td>
+                    {% endfor %}
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <a href="#" id="add-row-button" class="btn btn-secondary">Добавить строку</a>
+    </div>
+</form>
+<script>
+    $(document).ready(function () {
+        // when user clicks add more btn of variants
+        $('#add-row-button').click(function (ev) {
+            ev.preventDefault();
+            var count = $('tbody').children().length;
+            var tmplMarkup = $('#new-row-template').html();
+            var compiledTmpl = tmplMarkup.replace(/__prefix__/g, count);
+            $('tbody').append(compiledTmpl);
+
+            // update form count
+            $('#id_{{formset_name}}_set-TOTAL_FORMS').attr('value', count + 1);
+        });
+
+        $('#hide-deleted-fields').change(function () {
+            toggleDeletedFieldsVisibility();
+        });
+
+        function toggleDeletedFieldsVisibility() {
+            var hideDeletedFields = $('#hide-deleted-fields').prop('checked');
+            if (hideDeletedFields) {
+                $('.delete-row-switch:checked').closest('tr').hide();
+            } else {
+                $('.delete-row-switch:checked').closest('tr').show();
+            }
+        }
+
+        function toggleRowVisibility(row) {
+            var deleteSwitch = $('#hide-deleted-fields');
+            if (deleteSwitch.prop('checked')) {
+                row.hide();
+            } else {
+                row.show();
+            }
+        }
+
+        $(document).on('click', '.delete-row-switch', function () {
+            var row = $(this).closest("tr");
+            row.find('.form-control').prop('disabled', function (_, current) {
+                return !current;
+            });
+            row.find('input[type="checkbox"][name$="-DELETE"]').prop('checked', function (_, current) {
+                return !current;
+            });
+            toggleRowVisibility(row)
+        });
+    });
+</script>
