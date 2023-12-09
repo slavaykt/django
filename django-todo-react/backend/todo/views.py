@@ -8,3 +8,6 @@ from .models import Todo
 class TodoView(viewsets.ModelViewSet):
     serializer_class = TodoSerializer
     queryset = Todo.objects.all()
+    def put(self, request, *args, **kwargs):
+        pk = kwargs.get("pk", None)
+        print(request.data)
