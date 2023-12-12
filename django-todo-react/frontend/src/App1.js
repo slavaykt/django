@@ -1,6 +1,6 @@
 import React, {useState,useEffect} from 'react';
 import TodosList from "./components/TodosList";
-import TodoEdit from "./components/TodoEdit";
+import TodoEdit from "./components/TodoEdit1";
 import axios from "axios";
 
 const App1 = () => {
